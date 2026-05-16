@@ -1,0 +1,31 @@
+extends ../layout
+
+block stylesheets
+  link(rel='stylesheet', href='/stylesheets/drag-and-drop.css')
+
+block content
+  h1.title.is-1= title
+  .container
+    .grid
+      each list in lists
+        .cell
+          h2.subtitle.is-2= list.title
+          ul.drag-container
+            each item in list.items
+              li.draggable(draggable='true', data-id=item.id)
+                span.grip
+                span= item.title
+
+block scripts
+  script.
+    const draggables = document.querySelectorAll('.draggable');
+
+    draggables.forEach(draggable => {
+      draggable.addEventListener('dragstart', () => {
+        draggable.classList.add('dragging');
+      });
+
+      draggable.addEventListener('dragend', () => {
+        draggable.classList.remove('dragging');
+      });
+    })

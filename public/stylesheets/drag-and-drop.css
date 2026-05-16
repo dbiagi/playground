@@ -1,0 +1,26 @@
+span.grip {
+  width: 15px;
+  height: 30px;
+  display: inline-block;
+  overflow: hidden;
+  line-height: 5px;
+  padding: 4px 4px;
+  cursor: grab;
+  vertical-align: middle;
+  margin-top: -.7em;
+  margin-right: .3em;
+  font-size: 12px;
+  font-family: sans-serif;
+  letter-spacing: 2px;
+  color: #cccccc;
+  text-shadow: 1px 0 1px black;
+}
+
+span.grip::after {
+  content: '.. .. .. ..';
+}
+
+.drag-container li.draggable {
+  cursor: grab;
+}
+
