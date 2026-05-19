@@ -4,6 +4,8 @@ const router = express.Router();
 const title = 'Playground | Drag and Drop';
 const numberOfLists = 3
 const numberOfItemsPerList = 6
+const slots = 3
+
 const lists = []
 for (let i = 1; i <= numberOfLists; i++) {
   const list = {
@@ -14,13 +16,18 @@ for (let i = 1; i <= numberOfLists; i++) {
     list.items.push({
       id: `${i}-${j}`,
       title: "Item " + j,
+      type: `type-${i}`,
     });
   }
   lists.push(list);
 }
 
 router.get('/', function (req, res, next) {
-  res.render('drag-and-drop/index', {title, lists});
+  res.render('drag-and-drop/index', {
+    title,
+    lists,
+    slots
+  });
 });
 
 module.exports = router;

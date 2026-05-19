@@ -10,22 +10,90 @@ block content
       each list in lists
         .cell
           h2.subtitle.is-2= list.title
-          ul.drag-container
+          ul.board
             each item in list.items
-              li.draggable(draggable='true', data-id=item.id)
+              li.draggable-item.board-item(draggable='true', data-id=item.id, data-type=item.type)
                 span.grip
                 span= item.title
+  .container
+    .grid
+      - for(let z = 0; z < 3; z++)
+        .cell
+          h2.subtitle.is-2 Drop Zone ##{z + 1}
+          ul.board
+            - for (let i = 1; i <= slots; i++)
+              li.board-item.drop-zone(data-allowed-type="type-" + i) Slot ##{i}
+
 
 block scripts
   script.
-    const draggables = document.querySelectorAll('.draggable');
+    const draggables = document.querySelectorAll('.draggable-item');
+    const dropZones = document.querySelectorAll('.drop-zone');
+
+    dropZones.forEach(zone => {
+      zone.dataset.originalText = zone.innerText;
+    });
 
     draggables.forEach(draggable => {
-      draggable.addEventListener('dragstart', () => {
-        draggable.classList.add('dragging');
+      draggable.addEventListener('dragstart', e => {
+        e.target.classList.add('dragging');
+        e.dataTransfer.setData('text/plain', e.target.dataset.id);
+        highlightDropZones(e.target.dataset.type);
       });
 
-      draggable.addEventListener('dragend', () => {
-        draggable.classList.remove('dragging');
+      draggable.addEventListener('dragend', e => {
+        e.target.classList.remove('dragging');
+        clearHighlights();
       });
-    })
+    });
+
+    dropZones.forEach(zone => {
+      zone.addEventListener('dragover', e => {
+        e.preventDefault();
+      });
+
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        const id = e.dataTransfer.getData('text/plain');
+        const dragging = document.querySelector(`.draggable-item[data-id='${id}']`);
+        const type = dragging.dataset.type;
+
+        if (!dragging || zone.dataset.allowedType !== type) {
+          return;
+        }
+
+        const previousId = zone.dataset.selectedItemId;
+        if (previousId && previousId !== id) {
+          const previousItem = document.querySelector(`.draggable-item[data-id='${previousId}']`);
+          if (previousItem) previousItem.classList.remove('placed');
+        }
+
+        zone.dataset.selectedItemId = id;
+
+        const undoBtn = document.createElement('button');
+        undoBtn.className = 'delete is-small is-pulled-right';
+        undoBtn.addEventListener('click', () => {
+          document.querySelector(`.draggable-item[data-id='${id}']`).classList.remove('placed');
+          zone.innerText = zone.dataset.originalText;
+          delete zone.dataset.selectedItemId;
+        });
+
+        zone.innerText = dragging.textContent.trim();
+        zone.appendChild(undoBtn);
+        dragging.classList.add('placed');
+      });
+    });
+
+    function highlightDropZones(type) {
+      dropZones.forEach(zone => {
+        if (zone.dataset.allowedType === type) {
+          zone.classList.add('highlight');
+        } else {
+          zone.classList.remove('highlight');
+        }
+      });
+    }
+
+    function clearHighlights() {
+      dropZones.forEach(zone => zone.classList.remove('highlight'));
+    }

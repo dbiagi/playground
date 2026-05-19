@@ -4,13 +4,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## About
 
-A personal playground for small frontend experiments. The backend serves Pug-rendered HTML pages; frontend uses plain HTML, CSS, and JavaScript.
+A personal playground for small frontend experiments. The backend serves Pug-rendered HTML pages; frontend uses plain
+HTML, CSS, and JavaScript.
 
 ## Tech stack
 
-- Backend: Node.js + Express (`app.js`), started via `bin/www`
-- Templating: Pug
-- Frontend: plain HTML, CSS, JavaScript (no build step, no bundler)
+| Component       | Technology            |
+|-----------------|-----------------------|
+| Backend         | Node.js + Express     |
+| Template engine | Pug                   |
+| Frontend        | HTML, CSS, JavaScript |
+| Styling         | CSS (no preprocessor) |
+| CSS Framework   | Bulma                 |
 
 ## Running
 
@@ -31,11 +36,13 @@ views/                     # Pug templates
 public/                    # Static assets (stylesheets, images, javascripts)
 ```
 
-Routes render Pug views via `res.render()`. Each project gets a route file in `src/routes/` and a view directory under `views/`. Adding a new project: create `src/routes/<name>.js`, add its view at `views/<name>/index.pug`, and register the router in `app.js`.
+Routes render Pug views via `res.render()`. Each project gets a route file in `src/routes/` and a view directory under
+`views/`. Adding a new project: create `src/routes/<name>.js`, add its view at `views/<name>/index.pug`, and register
+the router in `app.js`.
 
 ## Routes
 
-| Path | Description |
-|------|-------------|
-| `/` | Home — lists all project links |
-| `/drag-and-drop` | Drag & Drop app |
+| Path             | Description                    |
+|------------------|--------------------------------|
+| `/`              | Home — lists all project links |
+| `/drag-and-drop` | Drag & Drop app                |

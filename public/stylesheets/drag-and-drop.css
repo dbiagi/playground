@@ -20,7 +20,33 @@ span.grip::after {
   content: '.. .. .. ..';
 }
 
-.drag-container li.draggable {
+.board {
+  border: 1px solid gray;
+  max-width: 220px;
+}
+
+.board-item {
+  border: 1px solid gray;
+  padding: 4px;
+  margin: 10px;
+}
+
+.board-item.dragging {
+  opacity: 0.5;
+}
+
+.board-item-hidden {
+  display: none;
+}
+
+.board-item.placed {
+  opacity: 0.2;
+}
+
+.draggable-item {
   cursor: grab;
 }
 
+.highlight {
+  background-color: var(--bulma-text-invert);
+}
